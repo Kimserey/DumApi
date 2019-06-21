@@ -1,40 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace DumpApi.Controllers
+namespace DumApi.Controllers
 {
+    public class DumObj
+    {
+        [Required]
+        public string Id { get; set; }
+        public int Value { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
 
     public class ValuesController : ControllerBase
     {
+        private readonly Dictionary<string, DumObj> _values = new Dictionary<string, DumObj>();
+
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        public ActionResult<IEnumerable<DumObj>> Get() => _values.Values;
 
         [HttpGet("{id}")]
-        public ActionResult<int> Get(int id)
-        {
-            return id;
-        }
+        public ActionResult<DumObj> Get(string id) => _values[id];
 
         [HttpPost]
-        public ActionResult<string> Post([FromBody] string value)
-        {
-            return value;
-        }
-
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        public void Post(DumObj value) => _values[value.Id] = value;
 
         [HttpDelete("{id}")]
-        public ActionResult<int> Delete(int id)
-        {
-            return id;
-        }
+        public void Delete(string id) => _values.Remove(id);
     }
 }
