@@ -13,21 +13,21 @@
           "name": "GET",
           "event": [
             {
-              "listen": "test",
+              "listen": "prerequest",
               "script": {
-                "id": "8925c057-b169-484f-b2dd-bf38f7198fe9",
+                "id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
                 "exec": [
-                  "console.log(\"Test\");"
+                  ""
                 ],
                 "type": "text/javascript"
               }
             },
             {
-              "listen": "prerequest",
+              "listen": "test",
               "script": {
-                "id": "e3402756-4fb4-4edd-b5a2-6cd6e3c66038",
+                "id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
                 "exec": [
-                  "// console.log(\"Prescript Test\");"
+                  "postman.setNextRequest(\"PUT\");"
                 ],
                 "type": "text/javascript"
               }
@@ -52,6 +52,30 @@
         },
         {
           "name": "POST",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "33224a89-38ab-43ac-9666-0319deb8c826",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
+                "exec": [
+                  "pm.test(\"POST should be successful\", function () {",
+                  "    pm.response.to.have.success;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -64,7 +88,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "\"Test Value\""
+              "raw": "{\n\t\"Id\": \"{{$guid}}\",\n\t\"Value\": 1\n}"
             },
             "url": {
               "raw": "http://{{HOST}}/api/values",
@@ -110,10 +134,61 @@
           },
           "response": []
         }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{TOKEN}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "92560d61-67f8-4a1f-81a5-6348961819ed",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "a4f075f8-2873-4f38-a3f4-864d7ea64fa1",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
       ]
     },
     {
       "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "fcaf4499-191b-438f-80fc-580830b2bee6",
+            "exec": [
+              "// Get the jwt token out of response body.",
+              "var token = pm.response.json().token;",
+              "pm.environment.set(\"TOKEN\", token);",
+              "",
+              "// Asserts that the token set in the environment is the same token returned by the request.",
+              "pm.test(\"Token environment is properly set in environment\", function () {",
+              "    pm.expect(pm.environment.get(\"TOKEN\")).to.equal(token)",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
@@ -150,7 +225,7 @@
         "id": "aa6e442e-d356-4cca-9edf-3046abf44da4",
         "type": "text/javascript",
         "exec": [
-          "console.log(\"Prescript Test\");"
+          ""
         ]
       }
     },
@@ -163,6 +238,20 @@
           ""
         ]
       }
+    }
+  ],
+  "variable": [
+    {
+      "id": "67b11ee5-ca77-4d1a-a3b8-a31559d9f67a",
+      "key": "HOST",
+      "value": "localhost:5000",
+      "type": "string"
+    },
+    {
+      "id": "bc9ade5e-f0e6-4f91-a4cf-baf7dc075126",
+      "key": "TOKEN",
+      "value": "none",
+      "type": "string"
     }
   ]
 }
