@@ -17,7 +17,7 @@ namespace DumApi.Controllers
     [Authorize]
     public class ValuesController : ControllerBase
     {
-        private readonly Dictionary<string, DumObj> _values = new Dictionary<string, DumObj>();
+        private static readonly Dictionary<string, DumObj> _values = new Dictionary<string, DumObj>();
 
         [HttpGet]
         public ActionResult<IEnumerable<DumObj>> Get() => _values.Values;
@@ -26,7 +26,17 @@ namespace DumApi.Controllers
         public ActionResult<DumObj> Get(string id) => _values[id];
 
         [HttpPost]
-        public void Post(DumObj value) => _values[value.Id] = value;
+        public IActionResult Post(DumObj value)
+        {
+            if (_values.ContainsKey(value.Id))
+                return BadRequest("Object already exists.");
+
+            _values[value.Id] = value;
+            return Ok();
+        }
+
+        [HttpPut]
+        public void Put(DumObj value) => _values[value.Id] = value;
 
         [HttpDelete("{id}")]
         public void Delete(string id) => _values.Remove(id);

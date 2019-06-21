@@ -23,13 +23,13 @@ namespace DumApi.Controllers
     public class AccountController : ControllerBase
     {
         [HttpPost]
-        public ActionResult<AccessToken> Post(Credentials credentials)
+        public ActionResult<AccessToken> Post(Credentials credentials, [FromServices] IJwtToken jwtToken)
         {
             if (credentials.Username == "Kimserey")
             {
                 return new AccessToken
                 {
-                    Token = JwtToken.Generate(credentials.Username)
+                    Token = jwtToken.Generate(credentials.Username)
                 };
             }
 
