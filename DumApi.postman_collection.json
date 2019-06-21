@@ -27,7 +27,9 @@
               "script": {
                 "id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
                 "exec": [
-                  "postman.setNextRequest(\"PUT\");"
+                  "pm.test(\"200 Success\", function () {",
+                  "    pm.response.to.have.success;",
+                  "});"
                 ],
                 "type": "text/javascript"
               }
@@ -68,7 +70,7 @@
               "script": {
                 "id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
                 "exec": [
-                  "pm.test(\"POST should be successful\", function () {",
+                  "pm.test(\"200 Success\", function () {",
                   "    pm.response.to.have.success;",
                   "});"
                 ],
@@ -106,6 +108,20 @@
         },
         {
           "name": "PUT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "4ea9eaca-977e-4c03-9314-2cd9ca9b9758",
+                "exec": [
+                  "pm.test(\"200 Success\", function () {",
+                  "    pm.response.to.have.success;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "PUT",
             "header": [
@@ -178,11 +194,11 @@
             "exec": [
               "// Get the jwt token out of response body.",
               "var token = pm.response.json().token;",
-              "pm.environment.set(\"TOKEN\", token);",
+              "pm.globals.set(\"TOKEN\", token);",
               "",
               "// Asserts that the token set in the environment is the same token returned by the request.",
               "pm.test(\"Token environment is properly set in environment\", function () {",
-              "    pm.expect(pm.environment.get(\"TOKEN\")).to.equal(token)",
+              "    pm.expect(pm.globals.get(\"TOKEN\")).to.equal(token)",
               "});"
             ],
             "type": "text/javascript"
@@ -242,15 +258,9 @@
   ],
   "variable": [
     {
-      "id": "67b11ee5-ca77-4d1a-a3b8-a31559d9f67a",
+      "id": "2771c91e-6ce6-4343-a52c-498c7cb822aa",
       "key": "HOST",
       "value": "localhost:5000",
-      "type": "string"
-    },
-    {
-      "id": "bc9ade5e-f0e6-4f91-a4cf-baf7dc075126",
-      "key": "TOKEN",
-      "value": "none",
       "type": "string"
     }
   ]
