@@ -1,59 +1,168 @@
 {
-	"info": {
-		"_postman_id": "bd110ec3-730e-496e-92b2-6d158109837b",
-		"name": "DumApi",
-		"description": "Dummy API test",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "GET /values",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{HOST}}/api/values",
-					"protocol": "http",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"api",
-						"values"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST /values",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "\"Test Value\""
-				},
-				"url": {
-					"raw": "http://{{HOST}}/api/values",
-					"protocol": "http",
-					"host": [
-						"{{HOST}}"
-					],
-					"path": [
-						"api",
-						"values"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "bd110ec3-730e-496e-92b2-6d158109837b",
+    "name": "DumApi",
+    "description": "Dummy API test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Values",
+      "item": [
+        {
+          "name": "GET",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "8925c057-b169-484f-b2dd-bf38f7198fe9",
+                "exec": [
+                  "console.log(\"Test\");"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "e3402756-4fb4-4edd-b5a2-6cd6e3c66038",
+                "exec": [
+                  "// console.log(\"Prescript Test\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://{{HOST}}/api/values",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\"Test Value\""
+            },
+            "url": {
+              "raw": "http://{{HOST}}/api/values",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"Id\": \"Test\",\n\t\"Value\": 22\n}"
+            },
+            "url": {
+              "raw": "http://{{HOST}}/api/values",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"username\": \"Kimserey\",\n\t\"password\": \"123\"\n}"
+        },
+        "url": {
+          "raw": "http://{{HOST}}/api/account",
+          "protocol": "http",
+          "host": [
+            "{{HOST}}"
+          ],
+          "path": [
+            "api",
+            "account"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "aa6e442e-d356-4cca-9edf-3046abf44da4",
+        "type": "text/javascript",
+        "exec": [
+          "console.log(\"Prescript Test\");"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "4b5b0cb8-4d45-4954-adff-439523e3a8c5",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
 }
