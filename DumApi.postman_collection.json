@@ -7,10 +7,42 @@
   },
   "item": [
     {
-      "name": "Values",
+      "name": "Test suite",
       "item": [
         {
-          "name": "GET",
+          "name": "0. Clear",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0aa37222-8160-4df4-8ab3-273e9e0cb790",
+                "exec": [
+                  "postman.setNextRequest(\"1. Request all values\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://{{HOST}}/api/values/clear",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values",
+                "clear"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1. Request all values",
           "event": [
             {
               "listen": "prerequest",
@@ -27,9 +59,249 @@
               "script": {
                 "id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
                 "exec": [
-                  "pm.test(\"200 Success\", function () {",
+                  "pm.test(\"Expects response values to be empty.\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res).to.be.empty;",
+                  "});",
+                  "",
+                  "postman.setNextRequest(\"2. Post new value\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://{{HOST}}/api/values",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values"
+              ]
+            },
+            "description": "Request for the first time all values. Should be empty."
+          },
+          "response": []
+        },
+        {
+          "name": "2. Post new value",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "33224a89-38ab-43ac-9666-0319deb8c826",
+                "exec": [
+                  "// Generate test ID for the rest of the test suite\r",
+                  "var id = require('uuid').v4();\r",
+                  "var value = Math.floor(Math.random() * Math.floor(100));\r",
+                  "\r",
+                  "pm.variables.set('ID', id);\r",
+                  "pm.variables.set('VALUE', value);\r",
+                  "\r",
+                  "console.log(\"Generate test value: \" + id + \"/\" + value);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
+                "exec": [
+                  "pm.test(\"Expects creation of new value to successed.\", function () {",
                   "    pm.response.to.have.success;",
-                  "});"
+                  "});",
+                  "",
+                  "postman.setNextRequest(\"3. Get values\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"Id\": \"{{ID}}\",\n\t\"Value\": {{VALUE}}\n}"
+            },
+            "url": {
+              "raw": "http://{{HOST}}/api/values",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values"
+              ]
+            },
+            "description": "Posting the first value with a UUID generated. Should be successful."
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get values",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
+                "exec": [
+                  "var id = pm.variables.get(\"ID\");",
+                  "var value = pm.variables.get(\"VALUE\");",
+                  "    ",
+                  "pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {",
+                  "    var res = pm.response.json();",
+                  "",
+                  "    ",
+                  "    var el = res.find(function (el) {",
+                  "        return el.id === id;",
+                  "    });",
+                  "    ",
+                  "    pm.expect(el.value).to.equal(value);",
+                  "});",
+                  "",
+                  "postman.setNextRequest(\"4. Modify value\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://{{HOST}}/api/values",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values"
+              ]
+            },
+            "description": "Values should return a value of ID added from (2)."
+          },
+          "response": []
+        },
+        {
+          "name": "4. Modify value",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "4ea9eaca-977e-4c03-9314-2cd9ca9b9758",
+                "exec": [
+                  "pm.test(\"Expects update of value to successed.\", function () {",
+                  "    pm.response.to.have.success;",
+                  "});",
+                  "",
+                  "postman.setNextRequest(\"5. Get values\");"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "26085c65-dbac-4383-a641-f36ba2e65db7",
+                "exec": [
+                  "var id = pm.variables.get('ID', id);\r",
+                  "var value = Math.floor(Math.random() * Math.floor(100));\r",
+                  "\r",
+                  "pm.variables.set('VALUE', value);\r",
+                  "\r",
+                  "console.log(\"Update existing test value: \" + id + \"/\" + value);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"Id\": \"{{ID}}\",\n\t\"Value\": {{VALUE}}\n}"
+            },
+            "url": {
+              "raw": "http://{{HOST}}/api/values",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "5. Get values",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
+                "exec": [
+                  "var id = pm.variables.get(\"ID\");",
+                  "var value = pm.variables.get(\"VALUE\");",
+                  "    ",
+                  "pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {",
+                  "    var res = pm.response.json();",
+                  "",
+                  "    ",
+                  "    var el = res.find(function (el) {",
+                  "        return el.id === id;",
+                  "    });",
+                  "    ",
+                  "    pm.expect(el.value).to.equal(value);",
+                  "});",
+                  "",
+                  "postman.setNextRequest(\"6. Delete value\");"
                 ],
                 "type": "text/javascript"
               }
@@ -53,12 +325,48 @@
           "response": []
         },
         {
-          "name": "POST",
+          "name": "6. Delete value",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d37bfead-5f14-404e-9e18-fddd4edae6e5",
+                "exec": [
+                  "pm.test(\"Expects deletion to succeed.\", function () {",
+                  "    pm.response.to.have.success;",
+                  "});",
+                  "",
+                  "postman.setNextRequest(\"7. Request all values\");"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://{{HOST}}/api/values/{{ID}}",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "path": [
+                "api",
+                "values",
+                "{{ID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "7. Request all values",
           "event": [
             {
               "listen": "prerequest",
               "script": {
-                "id": "33224a89-38ab-43ac-9666-0319deb8c826",
+                "id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
                 "exec": [
                   ""
                 ],
@@ -68,10 +376,11 @@
             {
               "listen": "test",
               "script": {
-                "id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
+                "id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
                 "exec": [
-                  "pm.test(\"200 Success\", function () {",
-                  "    pm.response.to.have.success;",
+                  "pm.test(\"Expects response values to be empty.\", function () {",
+                  "    var res = pm.response.json();",
+                  "    pm.expect(res).to.be.empty;",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -79,19 +388,8 @@
             }
           ],
           "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "name": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n\t\"Id\": \"{{$guid}}\",\n\t\"Value\": 1\n}"
-            },
+            "method": "GET",
+            "header": [],
             "url": {
               "raw": "http://{{HOST}}/api/values",
               "protocol": "http",
@@ -102,55 +400,13 @@
                 "api",
                 "values"
               ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "PUT",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "id": "4ea9eaca-977e-4c03-9314-2cd9ca9b9758",
-                "exec": [
-                  "pm.test(\"200 Success\", function () {",
-                  "    pm.response.to.have.success;",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "name": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n\t\"Id\": \"Test\",\n\t\"Value\": 22\n}"
             },
-            "url": {
-              "raw": "http://{{HOST}}/api/values",
-              "protocol": "http",
-              "host": [
-                "{{HOST}}"
-              ],
-              "path": [
-                "api",
-                "values"
-              ]
-            }
+            "description": "Request for the first time all values. Should be empty."
           },
           "response": []
         }
       ],
+      "description": "Test suite used to test adding, updating and deleting of values.",
       "auth": {
         "type": "bearer",
         "bearer": [
@@ -258,7 +514,7 @@
   ],
   "variable": [
     {
-      "id": "2771c91e-6ce6-4343-a52c-498c7cb822aa",
+      "id": "f6ea5fad-7333-4372-a2c5-09f441d68824",
       "key": "HOST",
       "value": "localhost:5000",
       "type": "string"

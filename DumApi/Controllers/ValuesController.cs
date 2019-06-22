@@ -40,5 +40,8 @@ namespace DumApi.Controllers
 
         [HttpDelete("{id}")]
         public void Delete(string id) => _values.Remove(id);
+
+        [HttpPost("clear")]
+        public void Clear() => _values.Clear();
     }
 }
