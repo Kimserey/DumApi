@@ -7,8 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DumApi", "DumApi\DumApi.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman", "Postman", "{7771B7A2-0553-4114-BB4C-41FC3FAEC512}"
 	ProjectSection(SolutionItems) = preProject
-		Postman\DumApi.postman_collection.json = Postman\DumApi.postman_collection.json
-		Postman\localhost.postman_environment.json = Postman\localhost.postman_environment.json
+		Postman\collection_tests_sanity_check.json = Postman\collection_tests_sanity_check.json
+		Postman\environment_localhost.json = Postman\environment_localhost.json
 	EndProjectSection
 EndProject
 Global
