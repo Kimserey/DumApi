@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "2dd9293e-29ef-4e61-9bbf-5278421e2aea",
+		"name": "DumApi Sanity",
+		"description": "Dummy API sanity check.\n\nClears all data, and track the creation, update and deletion of a special value created by tracking its ID across all requests.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fcaf4499-191b-438f-80fc-580830b2bee6",
+						"exec": [
+							"var token = pm.response.json().token;",
+							"pm.globals.set(\"TOKEN\", token);",
+							"",
+							"pm.test(\"Token environment is properly set in environment\", function () {",
+							"    pm.response.to.have.success;",
+							"    pm.expect(pm.globals.get(\"TOKEN\")).to.equal(token);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a36b8772-fc3e-44a5-ae23-caa527b91459",
+						"exec": [
+							"console.log(\"[Environment] \" + pm.environment.name);",
+							"",
+							"pm.variables.set(\"USER\", \"Kimserey\");",
+							"pm.variables.set(\"PWD\", \"123\");",
+							"",
+							"console.log(",
+							"    \"[\" + request.name + \"] \" ",
+							"    + \"Logging in to set token for next requests (\" ",
+							"    + pm.variables.get(\"USER\")",
+							"    + \"/\"",
+							"    + pm.variables.get(\"PWD\")",
+							"    + \").\"",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"{{USER}}\",\n\t\"password\": \"{{PWD}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{HOST}}/api/account",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post a value",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "33224a89-38ab-43ac-9666-0319deb8c826",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
+						"exec": [
+							"pm.test(\"Expects creation of new value to successed.\", function () {",
+							"    pm.response.to.have.success;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": \"0\",\n\t\"Value\": 1\n}"
+				},
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear all values",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0aa37222-8160-4df4-8ab3-273e9e0cb790",
+						"exec": [
+							"pm.test(\"Expects clearing of values to successed.\", function () {",
+							"    pm.response.to.have.success;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/api/values/clear",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values",
+						"clear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check everything is empty",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
+						"exec": [
+							"pm.test(\"Expects response values to be empty.\", function () {",
+							"    var res = pm.response.json();",
+							"    pm.expect(res).to.be.empty;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				},
+				"description": "Request for the first time all values. Should be empty."
+			},
+			"response": []
+		},
+		{
+			"name": "Post new value with a generated ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "33224a89-38ab-43ac-9666-0319deb8c826",
+						"exec": [
+							"var id = require('uuid').v4();\r",
+							"var value = Math.floor(Math.random() * Math.floor(100));\r",
+							"\r",
+							"pm.variables.set('ID', id);\r",
+							"pm.variables.set('VALUE', value);\r",
+							"\r",
+							"console.log(\r",
+							"    \"[\" + request.name + \"] \" \r",
+							"    + \"Generate test value: \" \r",
+							"    + id + \"/\" + value\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
+						"exec": [
+							"pm.test(\"Expects creation of new value to successed.\", function () {",
+							"    pm.response.to.have.success;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": \"{{ID}}\",\n\t\"Value\": {{VALUE}}\n}"
+				},
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				},
+				"description": "Posting the first value with a UUID generated. Should be successful."
+			},
+			"response": []
+		},
+		{
+			"name": "Check if new value is availabe",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
+						"exec": [
+							"var id = pm.variables.get(\"ID\");",
+							"var value = pm.variables.get(\"VALUE\");",
+							"    ",
+							"pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {",
+							"    var res = pm.response.json();",
+							"",
+							"    ",
+							"    var el = res.find(function (el) {",
+							"        return el.id === id;",
+							"    });",
+							"    ",
+							"    pm.expect(el.value).to.equal(value);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				},
+				"description": "Values should return a value of ID added from (2)."
+			},
+			"response": []
+		},
+		{
+			"name": "Modify posted value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ea9eaca-977e-4c03-9314-2cd9ca9b9758",
+						"exec": [
+							"pm.test(\"Expects update of value to successed.\", function () {",
+							"    pm.response.to.have.success;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "26085c65-dbac-4383-a641-f36ba2e65db7",
+						"exec": [
+							"var id = pm.variables.get('ID', id);\r",
+							"var value = Math.floor(Math.random() * Math.floor(100));\r",
+							"\r",
+							"pm.variables.set('VALUE', value);\r",
+							"\r",
+							"console.log(\r",
+							"    \"[\" + request.name + \"] \" \r",
+							"    + \"Update existing test value: \" \r",
+							"    + id + \"/\" + value\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": \"{{ID}}\",\n\t\"Value\": {{VALUE}}\n}"
+				},
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check if value is modified",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
+						"exec": [
+							"var id = pm.variables.get(\"ID\");",
+							"var value = pm.variables.get(\"VALUE\");",
+							"    ",
+							"pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {",
+							"    var res = pm.response.json();",
+							"",
+							"    ",
+							"    var el = res.find(function (el) {",
+							"        return el.id === id;",
+							"    });",
+							"    ",
+							"    pm.expect(el.value).to.equal(value);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete value",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d37bfead-5f14-404e-9e18-fddd4edae6e5",
+						"exec": [
+							"pm.test(\"Expects deletion to succeed.\", function () {",
+							"    pm.response.to.have.success;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/api/values/{{ID}}",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values",
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check everything is back to empty",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f416edb7-fe53-4dd6-b64a-9d8ec6fe4157",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
+						"exec": [
+							"pm.test(\"Expects response values to be empty.\", function () {",
+							"    var res = pm.response.json();",
+							"    pm.expect(res).to.be.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				},
+				"description": "Request for the first time all values. Should be empty."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "aa6e442e-d356-4cca-9edf-3046abf44da4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "4b5b0cb8-4d45-4954-adff-439523e3a8c5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

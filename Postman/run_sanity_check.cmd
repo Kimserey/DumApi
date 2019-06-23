@@ -1,0 +1,1 @@
+newman run collection_tests_sanity_check.json -e environment_localhost.json --bail
