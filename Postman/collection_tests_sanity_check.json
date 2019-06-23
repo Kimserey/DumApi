@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "2dd9293e-29ef-4e61-9bbf-5278421e2aea",
-		"name": "DumApi Sanity",
+		"_postman_id": "f820be37-199a-4b23-b7a0-c80b2c298479",
+		"name": "Sanity check",
 		"description": "Dummy API sanity check.\n\nClears all data, and track the creation, update and deletion of a special value created by tracking its ID across all requests.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -302,15 +302,12 @@
 						"exec": [
 							"var id = pm.variables.get(\"ID\");",
 							"var value = pm.variables.get(\"VALUE\");",
-							"    ",
-							"pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {",
-							"    var res = pm.response.json();",
+							"var res = pm.response.json();",
+							"var el = res.find(function (el) {",
+							"    return el.id === id;",
+							"});",
 							"",
-							"    ",
-							"    var el = res.find(function (el) {",
-							"        return el.id === id;",
-							"    });",
-							"    ",
+							"pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {",
 							"    pm.expect(el.value).to.equal(value);",
 							"});",
 							""
@@ -419,20 +416,16 @@
 					"script": {
 						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
 						"exec": [
-							"var id = pm.variables.get(\"ID\");",
-							"var value = pm.variables.get(\"VALUE\");",
-							"    ",
-							"pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {",
-							"    var res = pm.response.json();",
-							"",
-							"    ",
-							"    var el = res.find(function (el) {",
-							"        return el.id === id;",
-							"    });",
-							"    ",
-							"    pm.expect(el.value).to.equal(value);",
-							"});",
-							""
+							"var id = pm.variables.get(\"ID\");\r",
+							"var value = pm.variables.get(\"VALUE\");\r",
+							"var res = pm.response.json();\r",
+							"var el = res.find(function (el) {\r",
+							"    return el.id === id;\r",
+							"});\r",
+							"     \r",
+							"pm.test(\"Expects id [\" + id + \"] to have value [\" + value + \"]\", function () {\r",
+							"    pm.expect(el.value).to.equal(value);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
