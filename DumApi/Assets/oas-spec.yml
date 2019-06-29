@@ -31,15 +31,6 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/AccessToken'
-        
-        '400':
-          description: |-
-            Bad Request - Return when the request body is invalid.
-        
-        '401':
-          description: |-
-            Unauthorized - Returned when the username and password is not recognized.
-            Verify the username and password, case sensitive.
 
       tags:
         - Account
@@ -48,11 +39,38 @@ paths:
     get:
       description: Get values
 
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: OK - Get the list of values
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DumObj'
+
       tags:
         - Values
 
     post:
       description: Post a value
+
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        requred: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DumObj'
+
+      responses:
+        '200':
+          description: OK - Post success.
 
       tags:
         - Values
@@ -60,12 +78,44 @@ paths:
     put:
       description: Put a value
     
+      security:
+        - bearerAuth: []
+    
+      requestBody:
+        requred: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DumObj'
+
+      responses:
+        '200':
+          description: OK - Put success.
+
       tags:
         - Values
 
   /api/values/{id}:
     get:
       description: Get a value of the id specified
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the value to request.
+
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DumObj'
 
       tags:
         - Values
@@ -74,11 +124,24 @@ paths:
     post:
       description: Clear all values
 
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: OK - Clear all value success.
+
       tags:
         - Values
-        
+
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     AccessToken:
       type: object
@@ -93,6 +156,23 @@ components:
           type: string
         password:
           type: string
+      required:
+        - username
+        - password
       example:
         username: 'Kimserey'
         password: '123'
+
+    DumObj:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: number
+      required:
+        - id
+        - value
+      example:
+        id: 'hello'
+        value: 10
