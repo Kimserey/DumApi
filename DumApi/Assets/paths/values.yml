@@ -1,9 +1,10 @@
 /values:
   get:
     description: Get values
-
     security:
       - bearer: []
+    tags:
+      - Values
 
     responses:
       '200':
@@ -15,14 +16,12 @@
               items:
                 $ref: '#/components/schemas/DumObj'
 
-    tags:
-      - Values
-
   post:
     description: Post a value
-
     security:
       - bearer: []
+    tags:
+      - Values
 
     requestBody:
       requred: true
@@ -35,14 +34,12 @@
       '200':
         description: OK - Post success.
 
-    tags:
-      - Values
-
   put:
     description: Put a value
-  
     security:
       - bearer: []
+    tags:
+      - Values
   
     requestBody:
       requred: true
@@ -55,15 +52,14 @@
       '200':
         description: OK - Put success.
 
-    tags:
-      - Values
 
 /values/{id}:
   get:
     description: Get a value of the id specified
-
     security:
       - bearer: []
+    tags:
+      - Values
 
     parameters:
       - in: path
@@ -80,22 +76,18 @@
             schema:
               $ref: '#/components/schemas/DumObj'
 
-    tags:
-      - Values
 
 /values/clear:
   post:
     description: Clear all values
-
     security:
       - bearer: []
+    tags:
+      - Values
 
     responses:
       '200':
         description: OK - Clear all value success.
-
-    tags:
-      - Values
 
 
 components:

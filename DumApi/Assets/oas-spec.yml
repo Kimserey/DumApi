@@ -28,13 +28,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
-  schemas:
-    AccessToken:
-      $ref: '/oas/schemas/token.yml#AccessToken'
-    
-    Credentials:
-      $ref: '/oas/schemas/models.yml#Credentials'
-
-    DumObj:
-      $ref: '/oas/schemas/models.yml#DumObj'
