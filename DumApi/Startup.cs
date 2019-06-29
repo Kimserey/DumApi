@@ -2,12 +2,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 
 namespace DumApi
 {
@@ -49,11 +53,6 @@ namespace DumApi
                         IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(Configuration["Jwt:Key"]))
                     };
                 });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Value API", Version = "v1" });
-            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -63,10 +62,22 @@ namespace DumApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Value API V1");
+                c.SwaggerEndpoint("/oas/oas-spec.yml", "Value API");
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                RequestPath = "/oas",
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Assets")
+                ),
+                ContentTypeProvider = new FileExtensionContentTypeProvider(
+                    new Dictionary<string, string>()
+                    {
+                        [".yml"] = "application/yml"
+                    })
             });
 
             app.UseAuthentication();
