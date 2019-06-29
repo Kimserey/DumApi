@@ -1,19 +1,10 @@
 openapi: 3.0.2
 info:
-  title: Simple API overview
-  description: A simple API overview for testing purposes.
+  title: DumApi API
   version: 1.0.0
 servers:
-- url: 'https://{host}
-  variables:
-    host:
-      enum:
-        - 'localhost'
-        - 'test-qa.com'
-      default: 'localhost'
-      description: >-
-          this value is assigned by the service provider, in this example
-          `gigantic-server.com`
+- url: 'http://localhost:5000'
+  description: Development server
 paths:
   /:
     get:
