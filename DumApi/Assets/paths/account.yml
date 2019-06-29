@@ -1,0 +1,29 @@
+/account:
+  post:
+    description: Login
+    
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Credentials'
+    
+    responses:
+      '200':
+        description: OK - Get a bearer token.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/AccessToken'
+
+    tags:
+      - Account
+
+components:
+  schemas:
+    AccessToken:
+      $ref: '/oas/schemas/token.yml#AccessToken'
+    
+    Credentials:
+      $ref: '/oas/schemas/models.yml#Credentials'

@@ -1,0 +1,104 @@
+/values:
+  get:
+    description: Get values
+
+    security:
+      - bearer: []
+
+    responses:
+      '200':
+        description: OK - Get the list of values
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DumObj'
+
+    tags:
+      - Values
+
+  post:
+    description: Post a value
+
+    security:
+      - bearer: []
+
+    requestBody:
+      requred: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DumObj'
+
+    responses:
+      '200':
+        description: OK - Post success.
+
+    tags:
+      - Values
+
+  put:
+    description: Put a value
+  
+    security:
+      - bearer: []
+  
+    requestBody:
+      requred: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DumObj'
+
+    responses:
+      '200':
+        description: OK - Put success.
+
+    tags:
+      - Values
+
+/values/{id}:
+  get:
+    description: Get a value of the id specified
+
+    security:
+      - bearer: []
+
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: Id of the value to request.
+
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DumObj'
+
+    tags:
+      - Values
+
+/values/clear:
+  post:
+    description: Clear all values
+
+    security:
+      - bearer: []
+
+    responses:
+      '200':
+        description: OK - Clear all value success.
+
+    tags:
+      - Values
+
+
+components:
+  schemas:
+    DumObj:
+      $ref: '/oas/schemas/models.yml#DumObj'

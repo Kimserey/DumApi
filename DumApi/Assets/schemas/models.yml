@@ -1,0 +1,27 @@
+Credentials:
+  type: object
+  properties:
+    username:
+      type: string
+    password:
+      type: string
+  required:
+    - username
+    - password
+  example:
+    username: 'Kimserey'
+    password: '123'
+
+DumObj:
+  type: object
+  properties:
+    id: 
+      type: string
+    value:
+      type: number
+  required:
+    - id
+    - value
+  example:
+    id: "hello"
+    value: 10
