@@ -77,6 +77,7 @@ namespace DumApi
                 ContentTypeProvider = new FileExtensionContentTypeProvider(
                     new Dictionary<string, string>()
                     {
+                        [".json"] = "application/json",
                         [".yml"] = "application/yml"
                     }
                 ),

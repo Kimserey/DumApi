@@ -23,7 +23,7 @@
 components:
   schemas:
     AccessToken:
-      $ref: '/oas/schemas/token.yml#AccessToken'
+      $ref: '/oas/schemas/token.json'
     
     Credentials:
-      $ref: '/oas/schemas/models.yml#Credentials'
+      $ref: '/oas/schemas/credentials.json'

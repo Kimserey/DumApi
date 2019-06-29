@@ -1,5 +1,0 @@
-AccessToken:
-  type: object
-  properties:
-    token:
-      type: string

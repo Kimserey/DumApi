@@ -93,4 +93,4 @@
 components:
   schemas:
     DumObj:
-      $ref: '/oas/schemas/models.yml#DumObj'
+      $ref: '/oas/schemas/dum-obj.json'
