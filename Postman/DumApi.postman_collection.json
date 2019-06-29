@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "9cd41dc1-9e92-450f-ac50-0c0e6a8de6e1",
+		"name": "DumApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/values",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "33224a89-38ab-43ac-9666-0319deb8c826",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
+						"exec": [
+							"pm.test(\"Expects creation of new value to successed.\", function () {",
+							"    pm.response.to.have.success;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": \"5\",\n\t\"Value\": 10\n}"
+				},
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/values",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "33224a89-38ab-43ac-9666-0319deb8c826",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
+						"exec": [
+							"const schemaUrl = '/oas/schemas/dum-obj.json';",
+							"const url = 'http://' + pm.variables.get(\"HOST\") + schemaUrl;",
+							"",
+							"pm.sendRequest(url, function (err, res) {",
+							"    const schema = {",
+							"        type: \"array\",",
+							"        items: res.json()",
+							"    };",
+							"    ",
+							"    pm.test(\"Expects result to be an array of \" + schemaUrl, function () {",
+							"        const validation = tv4.validateResult(pm.response.json(), schema);",
+							"        pm.expect(validation.valid).to.be.true;",
+							"    })",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://{{HOST}}/api/values",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"values"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8470f948-04bb-4ffa-b777-e5c1a5f6e31a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "b502c8f4-cbd1-4489-ac13-a0eb84f1dc83",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f820be37-199a-4b23-b7a0-c80b2c298479",
+		"_postman_id": "5b557cb3-8931-482b-8b9f-cbfe11bbcc23",
 		"name": "Sanity check",
 		"description": "Dummy API sanity check.\n\nClears all data, and track the creation, update and deletion of a special value created by tracking its ID across all requests.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
