@@ -41,6 +41,42 @@ paths:
             Unauthorized - Returned when the username and password is not recognized.
             Verify the username and password, case sensitive.
 
+      tags:
+        - Account
+
+  /api/values:
+    get:
+      description: Get values
+
+      tags:
+        - Values
+
+    post:
+      description: Post a value
+
+      tags:
+        - Values
+
+    put:
+      description: Put a value
+    
+      tags:
+        - Values
+
+  /api/values/{id}:
+    get:
+      description: Get a value of the id specified
+
+      tags:
+        - Values
+
+  /api/values/clear:
+    post:
+      description: Clear all values
+
+      tags:
+        - Values
+        
 
 components:
   schemas:
