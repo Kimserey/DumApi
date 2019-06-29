@@ -1,14 +1,62 @@
 openapi: 3.0.2
+
+
 info:
   title: DumApi API
+  description: Account login and Values management.
   version: 1.0.0
+
+
 servers:
 - url: 'http://localhost:5000'
   description: Development server
+
+
 paths:
-  /:
-    get:
-      description: Default endpoint
+  /api/account:
+    post:
+      description: Login
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      
       responses:
         '200':
-          description: A list of pets.
+          description: OK - Get a bearer token.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/AccessToken'
+        
+        '400':
+          description: |-
+            Bad Request - Return when the request body is invalid.
+        
+        '401':
+          description: |-
+            Unauthorized - Returned when the username and password is not recognized.
+            Verify the username and password, case sensitive.
+
+
+components:
+  schemas:
+    AccessToken:
+      type: object
+      properties:
+        token:
+          type: string
+    
+    Credentials:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      example:
+        username: 'Kimserey'
+        password: '123'
