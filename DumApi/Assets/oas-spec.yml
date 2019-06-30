@@ -12,13 +12,10 @@ servers:
 paths:
   /account:
     $ref: '/oas/paths/account.yml#%2Faccount'
-
   /values:
     $ref: '/oas/paths/values.yml#%2Fvalues'
-
   /values/{id}:
     $ref: '/oas/paths/values.yml#%2Fvalues%2F%7Bid%7D'
-
   /values/clear:
     $ref: '/oas/paths/values.yml#%2Fvalues%2Fclear'
 
@@ -28,3 +25,12 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  schemas:
+    AccessToken:
+      $ref: '/oas/schemas/token.json'
+    Credentials:
+      $ref: '/oas/schemas/credentials.json'
+    MyValue:
+      $ref: '/oas/schemas/my-value.json'
+      

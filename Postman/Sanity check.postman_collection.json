@@ -108,19 +108,23 @@
 					"script": {
 						"id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
 						"exec": [
-							"const schemaUrl = '/oas/schemas/dum-obj.json';",
+							"const schemaUrl = '/oas/schemas/my-value.json';",
 							"const url       = 'http://' + pm.variables.get(\"HOST\") + schemaUrl;",
 							"const body      = JSON.parse(pm.request.body.raw);",
+							"    ",
+							"pm.test(\"Expect response to be success\", function () {",
+							"    pm.response.to.be.success;        ",
+							"});",
 							"",
 							"pm.sendRequest(url, function (err, res) {",
+							"    pm.test(\"Expect schema to exists\", function () {",
+							"        pm.expect(res).to.be.success;",
+							"    });",
+							"    ",
 							"    const schema = res.json();",
 							"    ",
 							"    pm.test(\"Expect request body to have schema \" + schemaUrl, function () {",
 							"        pm.expect(tv4.validate(body, schema)).to.be.true;",
-							"    });",
-							"    ",
-							"    pm.test(\"Expect response to be success\", function () {",
-							"        pm.response.to.be.success;        ",
 							"    });",
 							"});",
 							""
@@ -141,7 +145,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\": \"0\",\n\t\"value\": 1\n}"
+					"raw": "{\n\t\"id\": \"10\",\n\t\"value\": 1\n}"
 				},
 				"url": {
 					"raw": "http://{{HOST}}/api/values",
@@ -210,7 +214,7 @@
 					"script": {
 						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
 						"exec": [
-							"const schemaUrl = '/oas/schemas/dum-obj.json';",
+							"const schemaUrl = '/oas/schemas/my-value.json';",
 							"const url       = 'http://' + pm.variables.get(\"HOST\") + schemaUrl;",
 							"const res       = pm.response.json();",
 							"",
@@ -223,6 +227,10 @@
 							"});",
 							"",
 							"pm.sendRequest(url, function (err, res) {",
+							"    pm.test(\"Expect schema to exists\", function () {",
+							"        pm.expect(res).to.be.success;",
+							"    });",
+							"    ",
 							"    const schema = {",
 							"        type: \"array\",",
 							"        items: res.json()",
@@ -268,13 +276,7 @@
 							"var value = Math.floor(Math.random() * Math.floor(100));\r",
 							"\r",
 							"pm.variables.set('ID', id);\r",
-							"pm.variables.set('VALUE', value);\r",
-							"\r",
-							"console.log(\r",
-							"    \"[\" + request.name + \"] \" \r",
-							"    + \"Generate test value: \" \r",
-							"    + id + \"/\" + value\r",
-							");"
+							"pm.variables.set('VALUE', value);"
 						],
 						"type": "text/javascript"
 					}
@@ -340,7 +342,7 @@
 					"script": {
 						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
 						"exec": [
-							"const url   = 'http://' + pm.variables.get(\"HOST\") + '/oas/schemas/dum-obj.json';",
+							"const url   = 'http://' + pm.variables.get(\"HOST\") + '/oas/schemas/my-value.json';",
 							"const id      = pm.variables.get(\"ID\");",
 							"const value   = pm.variables.get(\"VALUE\");",
 							"const res     = pm.response.json();",
@@ -354,9 +356,13 @@
 							"});",
 							"",
 							"pm.sendRequest(url, function (err, res) {",
+							"    pm.test(\"Expect schema to exists\", function () {",
+							"        pm.expect(res).to.be.success;",
+							"    });",
+							"    ",
 							"    pm.test(\"Expect response to have schema \" + url, function () {",
 							"        pm.expect(tv4.validate(el, res.json())).to.be.true;",
-							"    })",
+							"    });",
 							"});"
 						],
 						"type": "text/javascript"
@@ -389,11 +395,15 @@
 					"script": {
 						"id": "4ea9eaca-977e-4c03-9314-2cd9ca9b9758",
 						"exec": [
-							"const schemaUrl = '/oas/schemas/dum-obj.json';",
+							"const schemaUrl = '/oas/schemas/my-value.json';",
 							"const url       = 'http://' + pm.variables.get(\"HOST\") + schemaUrl;",
 							"const body      = JSON.parse(pm.request.body.raw);",
 							"",
 							"pm.sendRequest(url, function (err, res) {",
+							"    pm.test(\"Expect schema to exists\", function () {",
+							"        pm.expect(res).to.be.success;",
+							"    });",
+							"    ",
 							"    const schema = res.json();",
 							"    ",
 							"    pm.test(\"Expect request body to have schema \" + schemaUrl, function () {",
@@ -467,7 +477,7 @@
 					"script": {
 						"id": "b7699a27-d5e7-4dff-ba76-06abd7f8c986",
 						"exec": [
-							"const url   = 'http://' + pm.variables.get(\"HOST\") + '/oas/schemas/dum-obj.json';\r",
+							"const url   = 'http://' + pm.variables.get(\"HOST\") + '/oas/schemas/my-value.json';\r",
 							"const id    = pm.variables.get(\"ID\");\r",
 							"const value = pm.variables.get(\"VALUE\");\r",
 							"const res   = pm.response.json();\r",
@@ -481,9 +491,13 @@
 							"});\r",
 							"\r",
 							"pm.sendRequest(url, function (err, res) {\r",
+							"    pm.test(\"Expect schema to exists\", function () {\r",
+							"        pm.expect(res).to.be.success;\r",
+							"    });\r",
+							"\r",
 							"    pm.test(\"Expect response to have schema \" + url, function () {\r",
 							"        pm.expect(tv4.validate(el, res.json())).to.be.true;\r",
-							"    })\r",
+							"    });\r",
 							"});"
 						],
 						"type": "text/javascript"

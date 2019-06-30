@@ -14,7 +14,7 @@
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/DumObj'
+                $ref: '#/components/schemas/MyValue'
 
   post:
     description: Post a value
@@ -28,7 +28,7 @@
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/DumObj'
+            $ref: '#/components/schemas/MyValue'
 
     responses:
       '200':
@@ -46,7 +46,7 @@
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/DumObj'
+            $ref: '#/components/schemas/MyValue'
 
     responses:
       '200':
@@ -74,7 +74,7 @@
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DumObj'
+              $ref: '#/components/schemas/MyValue'
 
 
 /values/clear:
@@ -92,5 +92,5 @@
 
 components:
   schemas:
-    DumObj:
-      $ref: '/oas/schemas/dum-obj.json'
+    MyValue:
+      $ref: '/oas/schemas/my-value.json'

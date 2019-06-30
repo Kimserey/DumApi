@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DumApi.Controllers
 {
-    public class DumObj
+    public class MyValue
     {
         [Required]
         public string Id { get; set; }
@@ -17,16 +17,16 @@ namespace DumApi.Controllers
     [Authorize]
     public class ValuesController : ControllerBase
     {
-        private static readonly Dictionary<string, DumObj> _values = new Dictionary<string, DumObj>();
+        private static readonly Dictionary<string, MyValue> _values = new Dictionary<string, MyValue>();
 
         [HttpGet]
-        public ActionResult<IEnumerable<DumObj>> Get() => _values.Values;
+        public ActionResult<IEnumerable<MyValue>> Get() => _values.Values;
 
         [HttpGet("{id}")]
-        public ActionResult<DumObj> Get(string id) => _values[id];
+        public ActionResult<MyValue> Get(string id) => _values[id];
 
         [HttpPost]
-        public IActionResult Post(DumObj value)
+        public IActionResult Post(MyValue value)
         {
             if (_values.ContainsKey(value.Id))
                 return BadRequest("Object already exists.");
@@ -36,7 +36,7 @@ namespace DumApi.Controllers
         }
 
         [HttpPut]
-        public void Put(DumObj value) => _values[value.Id] = value;
+        public void Put(MyValue value) => _values[value.Id] = value;
 
         [HttpDelete("{id}")]
         public void Delete(string id) => _values.Remove(id);
