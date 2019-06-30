@@ -65,14 +65,34 @@ namespace DumApi
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/oas/oas-spec.yml", "Value API");
+                c.SwaggerEndpoint("/openapi/openapi.yml", "Value API");
+                c.SwaggerEndpoint("/sampleopenapi/openapi.yml", "Sample Value API");
             });
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                RequestPath = "/oas",
+                RequestPath = "/openapi",
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "Assets")
+                    Path.Combine(Directory.GetCurrentDirectory(), "openapi")
+                ),
+                ContentTypeProvider = new FileExtensionContentTypeProvider(
+                    new Dictionary<string, string>()
+                    {
+                        [".json"] = "application/json",
+                        [".yml"] = "application/yml"
+                    }
+                ),
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] = "no-cache";
+                }
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                RequestPath = "/sampleopenapi",
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "sampleopenapi")
                 ),
                 ContentTypeProvider = new FileExtensionContentTypeProvider(
                     new Dictionary<string, string>()

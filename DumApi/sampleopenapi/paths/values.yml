@@ -1,0 +1,91 @@
+/api/values:
+  get:
+    tags:
+      - Values
+    responses:
+      '200':
+        description: >-
+          Returns a list of values
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '/sampleopenapi/schemas/my-value.yml'
+                
+  post:
+    tags:
+      - Values
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '/sampleopenapi/schemas/my-value.yml'
+          example:
+            id: "001"
+            value: 1
+    responses:
+      '200':
+        description: >-
+          Succeeded posting a value
+
+/api/values/{id}:
+  get:
+    tags:
+      - Single values
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    responses:
+      '200':
+        description: >-
+          Returns a single value
+        content:
+          application/json:
+            schema:
+              $ref: '/sampleopenapi/schemas/my-value.yml'
+          example:
+            id: "001"
+            value: 1
+  put:
+    tags:
+      - Single values
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              value:
+                type: integer
+          example:
+            value: 10
+    responses:
+      '200':
+        description: >-
+          Succeeded updating value
+        
+  delete:
+    tags:
+      - Single values
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    responses:
+      '200':
+        description: >-
+          Succeeded deleting value
+
+components:
+  parameters:
+    Id:
+      name: id
+      description: >-
+        The identifier of the value to act on
+      in: path
+      required: true
+      schema:
+        type: string
+      example: 10

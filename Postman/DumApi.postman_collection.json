@@ -243,16 +243,6 @@
 			"name": "/values",
 			"event": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "33224a89-38ab-43ac-9666-0319deb8c826",
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
 					"listen": "test",
 					"script": {
 						"id": "dbdace69-d2ba-4839-9e5d-698d846ff3dd",
